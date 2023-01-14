@@ -83,12 +83,12 @@ public class Boid extends Actor implements Poolable {
         if (this.getX()+this.getWidth() < 0) {
             this.setX(Config.WINDOW_WIDTH);
         } else if (this.getX()-this.getWidth() > Config.WINDOW_WIDTH) {
-            this.setX(0);
+            this.setX(-this.getWidth());
         }
         if (this.getY()+this.getHeight() < 0) {
             this.setY(Config.WINDOW_HEIGHT);
         } else if (this.getY()-this.getHeight() > Config.WINDOW_HEIGHT) {
-            this.setY(0);
+            this.setY(-this.getHeight());
         }
     }
 
