@@ -26,7 +26,8 @@ public class Boid extends Actor implements Poolable {
         this.sprite = CachedSprites.getSprite(BoidsGame.spriteTextureAtlas, "boid");
         this.id = id;
 
-        sprite.setBounds(random.nextInt(0, Config.WINDOW_WIDTH-15), random.nextInt(0, Config.WINDOW_HEIGHT-25), 15, 25);
+        setBounds(random.nextInt(0, Config.WINDOW_WIDTH-15), random.nextInt(0, Config.WINDOW_HEIGHT-25), 15, 25);
+
 
         return this;
     } 
@@ -41,6 +42,30 @@ public class Boid extends Actor implements Poolable {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         sprite.draw(batch);
+    }
+
+    @Override
+    public void act(float delta) {
+        // TODO Auto-generated method stub
+        super.act(delta);
+    }
+
+    @Override
+    protected void positionChanged() {
+        super.positionChanged();
+        this.sprite.setPosition(getX(), getY());
+    }
+
+    @Override
+    protected void sizeChanged() {
+        super.sizeChanged();
+        this.sprite.setSize(getWidth(), getHeight());
+    }
+
+    @Override
+    protected void rotationChanged() {
+        super.rotationChanged();
+        this.sprite.setRotation(getRotation());
     }
     
 }

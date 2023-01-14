@@ -59,10 +59,11 @@ public class MainScreen implements Screen {
     }
     private void draw() {
         ScreenUtils.clear(0, 0, 0, 0);
-        stage.draw();
+        this.stage.draw();
     }
     private void tick() {
         this.freePooledObjects();
+        this.stage.act(Gdx.graphics.getDeltaTime());
     }
 
     private void freePooledObjects() {
@@ -85,7 +86,7 @@ public class MainScreen implements Screen {
 
     @Override
     public void dispose() {
-        
+        stage.dispose();
     }
 
     @Override
