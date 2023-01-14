@@ -24,6 +24,17 @@ public class MainScreen implements Screen {
 
     public MainScreen(BoidsGame game) {
 		this.game = game;
+        setup();
+
+        for (int i = 0; i < 100; i++) {
+
+            activeBoids.add(boidPool.obtain().init(i, this.game.random));
+        }
+        for (Boid boid : activeBoids) {
+            this.stage.addActor(boid);
+        }
+    }
+    private void setup() {
 
 		this.camera = new OrthographicCamera();
 		this.camera.setToOrtho(false);
@@ -39,9 +50,6 @@ public class MainScreen implements Screen {
         };
         this.activeBoids = new ArrayList<Boid>();
 
-        Boid tmpBoid = boidPool.obtain().init();
-        this.activeBoids.add(tmpBoid);
-        this.stage.addActor(tmpBoid);
     }
 
     @Override
@@ -49,14 +57,13 @@ public class MainScreen implements Screen {
         tick();
         draw();
     }
-    public void draw() {
+    private void draw() {
         ScreenUtils.clear(0, 0, 0, 0);
         stage.draw();
     }
-    public void tick() {
+    private void tick() {
         this.freePooledObjects();
     }
-
 
     private void freePooledObjects() {
         List<Boid> dead = new ArrayList<>();
@@ -71,7 +78,6 @@ public class MainScreen implements Screen {
     }
 
 
-
     @Override
     public void resize(int width, int height) {
         this.view.update(width, height);
@@ -82,22 +88,18 @@ public class MainScreen implements Screen {
         
     }
 
-
     @Override
     public void pause() {
         
     }
-
     @Override
     public void resume() {
         
     }
-
     @Override
     public void hide() {
         
     }
-
     @Override
     public void show() {
         

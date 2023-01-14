@@ -1,17 +1,21 @@
 package com.moltenwolfcub.boids;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class BoidsGame extends Game {
-	public SpriteBatch spriteBatch;
     public static TextureAtlas spriteTextureAtlas;
+	public SpriteBatch spriteBatch;
+	public Random random;
 	
 	@Override
 	public void create () {
-		spriteBatch = new SpriteBatch();
 		spriteTextureAtlas = new TextureAtlas("main/atlases/spriteTextureMap.atlas");
+		this.random = new Random();
+		this.spriteBatch = new SpriteBatch();
 
 		setScreen(new MainScreen(this));
 	}
@@ -23,6 +27,6 @@ public class BoidsGame extends Game {
 	
 	@Override
 	public void dispose () {
-		spriteBatch.dispose();
+		this.spriteBatch.dispose();
 	}
 }
