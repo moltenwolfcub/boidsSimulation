@@ -66,6 +66,8 @@ public class Boid extends Actor implements Poolable {
 
         this.addAction(Actions.moveBy(this.deltaPos.x, this.deltaPos.y, 0f));
         this.handleScreenWrapping();
+
+        this.setRotation(calculateRotation(deltaPos));
     }
     
     private void handleScreenWrapping() {
@@ -79,5 +81,14 @@ public class Boid extends Actor implements Poolable {
         } else if (this.getY()-this.getHeight() > Config.WINDOW_HEIGHT) {
             this.setY(0);
         }
+    }
+
+    private float calculateRotation(Vector2 move) {
+        float x = move.x;
+        float y = move.y;
+        double radians = Math.atan(y/x);
+        float degrees = (float)Math.toDegrees(radians);
+        degrees += x>0 ? -90 : 90;
+        return degrees;
     }
 }
