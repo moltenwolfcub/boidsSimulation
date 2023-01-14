@@ -1,14 +1,16 @@
 package com.moltenwolfcub.boids;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class BoidsGame extends Game {
-	public ShapeRenderer shapeBatch;
+	// public ShapeRenderer shapeBatch;
+	public SpriteBatch spriteBatch;
 	
 	@Override
 	public void create () {
-		shapeBatch = new ShapeRenderer();
+		spriteBatch = new SpriteBatch();
+		// shapeBatch = new ShapeRenderer();
 
 		setScreen(new MainScreen(this));
 	}
@@ -20,6 +22,7 @@ public class BoidsGame extends Game {
 	
 	@Override
 	public void dispose () {
-		shapeBatch.dispose();
+		// shapeBatch.dispose();
+		spriteBatch.dispose();
 	}
 }
