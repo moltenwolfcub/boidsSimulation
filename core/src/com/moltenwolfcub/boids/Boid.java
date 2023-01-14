@@ -55,7 +55,6 @@ public class Boid extends Actor implements Poolable {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        // sprite.setColor(this.getColor());
         batch.setColor(this.getColor());
 
         batch.draw(
@@ -74,6 +73,8 @@ public class Boid extends Actor implements Poolable {
 
         this.addAction(Actions.moveBy(this.deltaPos.x, this.deltaPos.y, 0f));
         this.handleScreenWrapping();
+
+        this.resolveSpeed();
 
         this.setRotation(calculateRotation(deltaPos));
     }
@@ -99,4 +100,12 @@ public class Boid extends Actor implements Poolable {
         degrees += x>=0 ? -90 : 90;
         return degrees;
     }
+
+    private void resolveSpeed() {
+        float moveDistance = (float)Math.sqrt(this.deltaPos.x*this.deltaPos.x + this.deltaPos.y*this.deltaPos.y);
+        float targetX = deltaPos.x/moveDistance*Config.TARGET_SPEED;
+        float targetY = deltaPos.y/moveDistance*Config.TARGET_SPEED;
+        this.deltaPos.add(Config.RESOLVE_RATE*(targetX-this.deltaPos.x), Config.RESOLVE_RATE*(targetY-this.deltaPos.y));
+    }
+
 }
