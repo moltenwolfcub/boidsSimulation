@@ -2,15 +2,16 @@ package com.moltenwolfcub.boids;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public class BoidsGame extends Game {
-	// public ShapeRenderer shapeBatch;
 	public SpriteBatch spriteBatch;
+    public static TextureAtlas spriteTextureAtlas;
 	
 	@Override
 	public void create () {
 		spriteBatch = new SpriteBatch();
-		// shapeBatch = new ShapeRenderer();
+		spriteTextureAtlas = new TextureAtlas("main/atlases/spriteTextureMap.atlas");
 
 		setScreen(new MainScreen(this));
 	}
@@ -22,7 +23,6 @@ public class BoidsGame extends Game {
 	
 	@Override
 	public void dispose () {
-		// shapeBatch.dispose();
 		spriteBatch.dispose();
 	}
 }

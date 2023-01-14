@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.moltenwolfcub.boids.util.Config;
 
 public class MainScreen implements Screen {
     private final BoidsGame game;
@@ -41,8 +42,6 @@ public class MainScreen implements Screen {
         Boid tmpBoid = boidPool.obtain().init();
         this.activeBoids.add(tmpBoid);
         this.stage.addActor(tmpBoid);
-
-        tmpBoid.used = false;
     }
 
     @Override
