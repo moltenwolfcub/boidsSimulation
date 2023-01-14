@@ -76,7 +76,7 @@ public class Boid extends Actor implements Poolable {
 
         this.resolveSpeed();
 
-        this.setRotation(calculateRotation(deltaPos));
+        this.setRotation(calculateRotation());
     }
     
     private void handleScreenWrapping() {
@@ -92,9 +92,9 @@ public class Boid extends Actor implements Poolable {
         }
     }
 
-    private float calculateRotation(Vector2 move) {
-        float x = move.x;
-        float y = move.y;
+    private float calculateRotation() {
+        float x = deltaPos.x;
+        float y = deltaPos.y;
         double radians = Math.atan(y/x);
         float degrees = (float)Math.toDegrees(radians);
         degrees += x>=0 ? -90 : 90;
