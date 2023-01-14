@@ -32,7 +32,14 @@ public class Boid extends Actor implements Poolable {
         this.deltaPos.set(random.nextInt(-5, 5), random.nextInt(-5, 5));
 
         this.setOrigin(this.getWidth()/2, this.getHeight()/2);
-        this.setBounds(random.nextInt(0, Config.WINDOW_WIDTH-15), random.nextInt(0, Config.WINDOW_HEIGHT-25), 15, 25);
+        this.setBounds(random.nextFloat(0, Config.WINDOW_WIDTH-15), random.nextFloat(0, Config.WINDOW_HEIGHT-25), 15, 25);
+
+        // if (this.deltaPos.x == 0) {
+        //     this.setColor(Color.RED);
+        // }
+        // if (this.deltaPos.y == 0) {
+        //     this.setColor(Color.GREEN);
+        // }
 
         return this;
     } 
@@ -48,7 +55,8 @@ public class Boid extends Actor implements Poolable {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        sprite.setColor(this.getColor());
+        // sprite.setColor(this.getColor());
+        batch.setColor(this.getColor());
 
         batch.draw(
             this.sprite,
@@ -88,7 +96,7 @@ public class Boid extends Actor implements Poolable {
         float y = move.y;
         double radians = Math.atan(y/x);
         float degrees = (float)Math.toDegrees(radians);
-        degrees += x>0 ? -90 : 90;
+        degrees += x>=0 ? -90 : 90;
         return degrees;
     }
 }
