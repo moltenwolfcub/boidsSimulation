@@ -28,7 +28,7 @@ public class MainScreen implements Screen {
 
         for (int i = 0; i < 100; i++) {
 
-            activeBoids.add(boidPool.obtain().init(i, this.game.random));
+            activeBoids.add(boidPool.obtain().init(this, i, this.game.random));
         }
         for (Boid boid : activeBoids) {
             this.stage.addActor(boid);
@@ -78,6 +78,9 @@ public class MainScreen implements Screen {
         this.activeBoids.removeAll(dead);
     }
 
+    public List<Boid> getBoids() {
+        return activeBoids;
+    }
 
     @Override
     public void resize(int width, int height) {
