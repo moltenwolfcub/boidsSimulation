@@ -26,7 +26,7 @@ public class MainScreen implements Screen {
 		this.game = game;
         setup();
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < Config.BOID_COUNT; i++) {
 
             activeBoids.add(boidPool.obtain().init(this, i, this.game.random));
         }
