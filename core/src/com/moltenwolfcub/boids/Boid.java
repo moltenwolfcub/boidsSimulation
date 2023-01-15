@@ -76,6 +76,7 @@ public class Boid extends Actor implements Poolable {
 
         this.seperation();
         this.cohesion();
+        this.alignment();
 
         this.resolveSpeed();
 
@@ -157,6 +158,34 @@ public class Boid extends Actor implements Poolable {
         } catch (ArithmeticException e) {}
         try {
             this.deltaPos.add(0, Config.COHESION_FORCE*(sumY/inRangeCount));
-        } catch (Exception e) {}
+        } catch (ArithmeticException e) {}
+    }
+
+    private void alignment() {
+        int inRangeCount = 0;
+        int sumDeltaX = 0;
+        int sumDeltaY = 0;
+
+        for (Boid otherBoid : this.screen.getBoids()) {
+            if (otherBoid.id == this.id) {
+                continue;
+            }
+            float distanceX = otherBoid.getX() - this.getX();
+            float distanceY = otherBoid.getY() - this.getY();
+            float distance = (float)Math.sqrt(distanceX*distanceX + distanceY*distanceY);
+
+            if (distance > Config.VIEW_RANGE) {
+                continue;
+            }
+            inRangeCount++;
+            sumDeltaX+=otherBoid.deltaPos.x-this.deltaPos.x;
+            sumDeltaY+=otherBoid.deltaPos.y-this.deltaPos.x;
+        }
+        try {
+            this.deltaPos.add(Config.ALIGNMENT_FORCE*(sumDeltaX/inRangeCount),0);
+        } catch (ArithmeticException e) {}
+        try {
+            this.deltaPos.add(0, Config.ALIGNMENT_FORCE*(sumDeltaY/inRangeCount));
+        } catch (ArithmeticException e) {}
     }
 }

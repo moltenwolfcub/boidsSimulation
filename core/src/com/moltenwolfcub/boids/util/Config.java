@@ -10,4 +10,5 @@ public class Config {
     public static final int VIEW_RANGE = 75;
     public static final float SEPARATION_FORCE = 0.2f;
     public static final float COHESION_FORCE = 0.02f;
+    public static final float ALIGNMENT_FORCE = 0.03f;
 }
