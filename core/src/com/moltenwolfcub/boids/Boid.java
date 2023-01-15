@@ -134,7 +134,12 @@ public class Boid extends Actor implements Poolable {
             if (distance > Config.VIEW_RANGE) {
                 continue;
             }
-            this.deltaPos.add(-Config.SEPARATION_FORCE*(distanceX/distance), -Config.SEPARATION_FORCE*(distanceY/distance));
+            try {
+                this.deltaPos.add(-Config.SEPARATION_FORCE*(distanceX/distance),0);
+            } catch (ArithmeticException e) {}
+            try {
+                this.deltaPos.add(0, -Config.SEPARATION_FORCE*(distanceY/distance));
+            } catch (ArithmeticException e) {}
         }
     }
 
