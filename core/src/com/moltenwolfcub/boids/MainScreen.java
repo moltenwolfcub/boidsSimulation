@@ -16,7 +16,7 @@ import com.moltenwolfcub.boids.util.Config;
 public class MainScreen implements Screen {
     private final BoidsGame game;
     private OrthographicCamera camera;
-    private Viewport view;
+    public Viewport view;
     private Stage stage;
 
     private Pool<Boid> boidPool;

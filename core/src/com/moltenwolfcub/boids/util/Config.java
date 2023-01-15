@@ -11,4 +11,7 @@ public class Config {
     public static final float SEPARATION_FORCE = 0.2f;
     public static final float COHESION_FORCE = 0.02f;
     public static final float ALIGNMENT_FORCE = 0.03f;
+    public static final boolean AVOID_MOUSE = true;
+    public static final float MOUSE_SEPARATION_SCALAR = 2.5f;
+    public static final float MOUSE_EFFECT_RANGE_SCALAR = 2f;
 }

@@ -2,9 +2,11 @@ package com.moltenwolfcub.boids;
 
 import java.util.Random;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Pool.Poolable;
@@ -74,9 +76,12 @@ public class Boid extends Actor implements Poolable {
     public void act(float delta) {
         super.act(delta);
 
-        this.seperation();
         this.cohesion();
         this.alignment();
+        this.seperation();
+        if (Config.AVOID_MOUSE) {
+            this.mouseSeparation();
+        }
 
         this.resolveSpeed();
 
@@ -186,6 +191,23 @@ public class Boid extends Actor implements Poolable {
         } catch (ArithmeticException e) {}
         try {
             this.deltaPos.add(0, Config.ALIGNMENT_FORCE*(sumDeltaY/inRangeCount));
+        } catch (ArithmeticException e) {}
+    }
+
+    private void mouseSeparation() {
+        Vector3 mousePos = screen.view.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+        float distanceX = mousePos.x - this.getX();
+        float distanceY = mousePos.y - this.getY();
+        float distance = (float)Math.sqrt(distanceX*distanceX + distanceY*distanceY);
+
+        if (distance > Config.VIEW_RANGE*Config.MOUSE_EFFECT_RANGE_SCALAR) {
+            return;
+        }
+        try {
+            this.deltaPos.add(-Config.SEPARATION_FORCE*Config.MOUSE_SEPARATION_SCALAR*(distanceX/distance),0);
+        } catch (ArithmeticException e) {}
+        try {
+            this.deltaPos.add(0, -Config.SEPARATION_FORCE*Config.MOUSE_SEPARATION_SCALAR*(distanceY/distance));
         } catch (ArithmeticException e) {}
     }
 }
