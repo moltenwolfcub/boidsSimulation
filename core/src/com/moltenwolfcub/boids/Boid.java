@@ -74,11 +74,14 @@ public class Boid extends Actor implements Poolable {
     public void act(float delta) {
         super.act(delta);
 
-        this.avoidOthers();
-        this.addAction(Actions.moveBy(this.deltaPos.x, this.deltaPos.y, 0f));
-        this.handleScreenWrapping();
+        this.seperation();
+        this.cohesion();
 
         this.resolveSpeed();
+
+
+        this.addAction(Actions.moveBy(this.deltaPos.x, this.deltaPos.y, 0f));
+        this.handleScreenWrapping();
 
         this.setRotation(calculateRotation());
     }
@@ -112,7 +115,8 @@ public class Boid extends Actor implements Poolable {
         this.deltaPos.add(Config.RESOLVE_RATE*(targetX-this.deltaPos.x), Config.RESOLVE_RATE*(targetY-this.deltaPos.y));
     }
 
-    private void avoidOthers() {
+    
+    private void seperation() {
         for (Boid otherBoid : this.screen.getBoids()) {
             if (otherBoid.id == this.id) {
                 continue;
@@ -126,5 +130,33 @@ public class Boid extends Actor implements Poolable {
             }
             this.deltaPos.add(-Config.SEPARATION_FORCE*(distanceX/distance), -Config.SEPARATION_FORCE*(distanceY/distance));
         }
+    }
+
+    private void cohesion() {
+        int inRangeCount = 0;
+        int sumX = 0;
+        int sumY = 0;
+
+        for (Boid otherBoid : this.screen.getBoids()) {
+            if (otherBoid.id == this.id) {
+                continue;
+            }
+            float distanceX = otherBoid.getX() - this.getX();
+            float distanceY = otherBoid.getY() - this.getY();
+            float distance = (float)Math.sqrt(distanceX*distanceX + distanceY*distanceY);
+
+            if (distance > Config.VIEW_RANGE) {
+                continue;
+            }
+            inRangeCount++;
+            sumX+=distanceX;
+            sumY+=distanceY;
+        }
+        try {
+            this.deltaPos.add(Config.COHESION_FORCE*(sumX/inRangeCount),0);
+        } catch (ArithmeticException e) {}
+        try {
+            this.deltaPos.add(0, Config.COHESION_FORCE*(sumY/inRangeCount));
+        } catch (Exception e) {}
     }
 }
