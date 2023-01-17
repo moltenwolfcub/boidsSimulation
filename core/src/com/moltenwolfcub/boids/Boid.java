@@ -3,6 +3,7 @@ package com.moltenwolfcub.boids;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -17,6 +18,8 @@ public class Boid extends Actor implements Poolable {
     public boolean used;
     private Sprite sprite;
     private MainScreen screen;
+    private Random rand;
+    private static float lastHue;
 
     private Integer id;
     private Vector2 deltaPos;
@@ -33,11 +36,14 @@ public class Boid extends Actor implements Poolable {
         this.used = true;
         this.sprite = CachedSprites.getSprite(BoidsGame.spriteTextureAtlas, "boid");
         this.screen = screen;
+        this.rand = random;
         this.id = id;
-        this.deltaPos.set(random.nextInt(-5, 5), random.nextInt(-5, 5));
+        this.deltaPos.set(this.rand.nextInt(-5, 5), this.rand.nextInt(-5, 5));
 
         this.setOrigin(this.getWidth()/2, this.getHeight()/2);
-        this.setBounds(random.nextFloat(0, Config.WINDOW_WIDTH-15), random.nextFloat(0, Config.WINDOW_HEIGHT-25), 15, 25);
+        this.setBounds(this.rand.nextFloat(0, Config.WINDOW_WIDTH-15), this.rand.nextFloat(0, Config.WINDOW_HEIGHT-25), 15, 25);
+
+        newColor();
 
         // if (this.deltaPos.x == 0) {
         //     this.setColor(Color.RED);
@@ -95,13 +101,17 @@ public class Boid extends Actor implements Poolable {
     private void handleScreenWrapping() {
         if (this.getX()+this.getWidth() < 0) {
             this.setX(Config.WINDOW_WIDTH);
+            newColor();
         } else if (this.getX()-this.getWidth() > Config.WINDOW_WIDTH) {
             this.setX(-this.getWidth());
+            newColor();
         }
         if (this.getY()+this.getHeight() < 0) {
             this.setY(Config.WINDOW_HEIGHT);
+            newColor();
         } else if (this.getY()-this.getHeight() > Config.WINDOW_HEIGHT) {
             this.setY(-this.getHeight());
+            newColor();
         }
     }
 
@@ -119,6 +129,22 @@ public class Boid extends Actor implements Poolable {
         float targetX = this.deltaPos.x/moveDistance*Config.TARGET_SPEED;
         float targetY = this.deltaPos.y/moveDistance*Config.TARGET_SPEED;
         this.deltaPos.add(Config.RESOLVE_RATE*(targetX-this.deltaPos.x), Config.RESOLVE_RATE*(targetY-this.deltaPos.y));
+    }
+
+    private void newColor() {
+        switch (Config.HUE_STYLE) {
+            case 0:
+                this.setColor(Color.WHITE.fromHsv(lastHue, 1, 1));
+                break;
+            case 1:
+                this.setColor(Color.WHITE.fromHsv((this.getColor().toHsv(new float[3])[0]+lastHue)%360, 1, 1));
+                break;
+            case 2:
+                this.setColor(Color.WHITE.fromHsv((this.getColor().toHsv(new float[3])[0]+Config.HUE_CHANGE_AMOUNT*Config.HUE_STYLE_2_CHANGE_MULTIPLIER)%360, 1, 1));
+            default:
+                break;
+        }
+        lastHue = (lastHue+Config.HUE_CHANGE_AMOUNT)%360;
     }
 
     
